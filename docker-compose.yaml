@@ -63,7 +63,7 @@ services:
       MICRO_REGISTRY: "mdns"
 
   api:
-    command: api --handler=rpc --address=:8080 --namespace=shippy 
+    command: --enable_stats api --handler=rpc --address=:8080 --namespace=shippy 
     image: microhq/micro
     ports:
       - 8080:8080
