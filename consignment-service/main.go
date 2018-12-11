@@ -1,30 +1,30 @@
 package main
 
 import (
-	pb "shippy/consignment-service/proto/consignment"
-	vesselPb "shippy/vessel-service/proto/vessel"
-	userPb "shippy/user-service/proto/user"
-	"log"
-	"github.com/micro/go-micro"
-	"os"
-	"github.com/micro/go-micro/server"
-	"github.com/micro/go-micro/metadata"
-	"github.com/micro/go-micro/client"
 	"context"
 	"errors"
+	"log"
+	"os"
+	pb "shippy/consignment-service/proto/consignment"
+	userPb "shippy/user-service/proto/user"
+	vesselPb "shippy/vessel-service/proto/vessel"
+
+	"github.com/micro/go-micro"
+	"github.com/micro/go-micro/client"
+	"github.com/micro/go-micro/metadata"
+	"github.com/micro/go-micro/server"
 )
 
 const (
 	DEFAULT_HOST = "127.0.0.1:27017"
 )
 
-
 func main() {
 
 	// 获取容器设置的数据库地址环境变量的值
 	dbHost := os.Getenv("DB_HOST")
-	if dbHost == ""{
-		 dbHost = DEFAULT_HOST
+	if dbHost == "" {
+		dbHost = DEFAULT_HOST
 	}
 	session, err := CreateSession(dbHost)
 	// 创建于 MongoDB 的主会话，需在退出 main() 时候手动释放连接
@@ -71,6 +71,7 @@ func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 
 		// Note this is now uppercase (not entirely sure why this is...)
 		token := meta["Token"]
+		log.Println("Authenticating with token: ", token)
 
 		// Auth here
 		authClient := userPb.NewUserServiceClient("go.micro.srv.user", client.DefaultClient)
