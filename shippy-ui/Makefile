@@ -2,8 +2,7 @@
 
 build:
 	npm run build
-	docker build -t ewanvalentine/ui:latest .
-	docker push ewanvalentine/ui:latest
+	docker build -t ui:latest .
 
 deploy:
 	sed "s/{{ UPDATED_AT }}/$(shell date)/g" ./deployments/deployment.tmpl > ./deployments/deployment.yml
